@@ -51,5 +51,5 @@ Replace `'scan_and_enhance.py'` with the name of the Python script containing th
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/AndreaAlberti07/Computer-Vision-Project/blob/main/LICENSE).
+This project is licensed under the [APACHE 2.0 License](https://github.com/AndreaAlberti07/Computer-Vision-Project/blob/main/LICENSE).
 
