@@ -51,10 +51,5 @@ Replace `'scan_and_enhance.py'` with the name of the Python script containing th
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- This project uses the OpenCV library for computer vision and image processing.
-- Special thanks to the open-source community for valuable contributions and resources related to computer vision.
+This project is licensed under the [MIT License](https://github.com/AndreaAlberti07/Computer-Vision-Project/blob/main/LICENSE).
 
