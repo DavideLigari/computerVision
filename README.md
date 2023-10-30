@@ -1,55 +1,59 @@
-# Document Scanning and Enhancement Project
+# License Plate Detection and Recognition
 
-This Python-based project aims to develop an application that can take a picture of a document, detect its edges, and transform it into a neatly cropped and perspective-corrected scanned image. Additionally, the project includes functionality to enhance the text quality of scanned documents by removing noise, correcting skew, and improving readability.
+A computer vision project that focuses on the detection and recognition of license plates in images. This system is designed to locate license plates in images, extract the characters from the plates, and convert them into digital text.
 
 ## Project Overview
 
-Document scanning and enhancement play a crucial role in digitizing physical documents, improving document readability, and preparing documents for archiving or further processing. This project combines computer vision and image processing techniques to achieve these goals.
+The project involves several key steps:
 
-## Features
+1. **Dataset Preparation**: Collect a dataset of images containing vehicles with visible license plates and annotate the license plate regions.
 
-1. **Document Edge Detection and Cropping**:
-   - The application can take an input image of a document.
-   - It converts the image to grayscale, applies Gaussian blur to reduce noise, and utilizes Canny edge detection to identify document edges.
-   - The largest contour in the edge-detected image is assumed to be the document, and it is cropped from the input image.
-   - The cropped document is saved as a separate image file.
+2. **Preprocessing**: Enhance image quality through techniques like histogram equalization.
 
-2. **Document Enhancement**:
-   - The application loads the cropped document.
-   - It converts the document to grayscale and applies thresholding to enhance text visibility.
-   - The skew of the document is automatically corrected (deskewed).
-   - The enhanced document is saved as a separate image file.
+3. **Canny Edge Detection**: Identify strong edges in the preprocessed images.
 
-## Dependencies
+4. **Hough Transform for Plate Detection**: Detect potential rectangular regions in the images that could be license plates.
 
-- Python 3.x
-- OpenCV (opencv-python)
+5. **Region of Interest (ROI) Selection**: Narrow down the search area based on the detected lines and select the region where the license plate is located.
+
+6. **Erosion and Dilation for Text Enhancement**: Apply erosion and dilation to enhance the text features on the license plate.
+
+7. **Filters for Improved Plate Clarity**: Utilize filters like Sobel to further enhance the edges and characters on the license plate.
+
+8. **Character Segmentation**: Implement morphological algorithms for character segmentation within the license plate region.
+
+9. **Character Recognition**: Use Optical Character Recognition (OCR) techniques to recognize and extract characters from the segmented regions.
+
+10. **Post-processing and Verification**: Verify the recognized characters, correct errors, and format the characters if necessary.
 
 ## Usage
 
-1. Clone this repository to your local machine:
+- You can run the project by following the code and instructions provided in the Jupyter notebook (or script) included in this repository.
 
-```bash
-git clone https://github.com/your-username/document-scanning-and-enhancement.git
-```
+## Results
 
-2. Install the required dependencies:
+- Provide details on the project's accuracy and performance based on testing and evaluation. Highlight any areas for improvement.
 
-```bash
-pip install opencv-python
-```
+## Dependencies
 
-3. Run the document scanning and enhancement application:
-
-```bash
-python scan_and_enhance.py
-```
-
-Replace `'scan_and_enhance.py'` with the name of the Python script containing the code provided in this repository.
-
-4. Follow the on-screen instructions to provide the input image and observe the resulting cropped and enhanced document.
+- List the main libraries and dependencies used in the project (e.g., OpenCV, NumPy, etc.).
 
 ## License
 
-This project is licensed under the [APACHE 2.0 License](https://github.com/AndreaAlberti07/Computer-Vision-Project/blob/main/LICENSE).
+- This project is licensed under the [Your License Name] License. See the [LICENSE.md](LICENSE.md) file for details.
 
+## Acknowledgments
+
+- Any credits or acknowledgments for tools, libraries, or resources used in the project.
+
+## Contributors
+
+- List contributors to the project or give credit to individuals who have contributed in any way.
+
+## Contact
+
+- Provide your contact information if someone wants to reach out with questions or feedback.
+
+---
+
+Feel free to customize and expand this template to provide more detailed information about your project. Include images or additional documentation as needed to make your project's README.md informative and user-friendly.
