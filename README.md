@@ -55,5 +55,3 @@ The project involves several key steps:
 - Provide your contact information if someone wants to reach out with questions or feedback.
 
 ---
-
-Feel free to customize and expand this template to provide more detailed information about your project. Include images or additional documentation as needed to make your project's README.md informative and user-friendly.
