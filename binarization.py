@@ -23,6 +23,20 @@ storing_path = args["storing_path"]
 
 # Loss function
 def get_loss(num, bin, thresh, tuning_method, under_tuning, over_tuning):
+     """
+    Calculate a loss function based on the provided parameters.
+
+    Args:
+        num (array): Histogram values.
+        bin (array): Bin values of the histogram.
+        thresh (int): Threshold value for binarization.
+        tuning_method (str): Tuning method ('Auto' or 'Manual').
+        under_tuning (float): Tuning value for pixels under the threshold.
+        over_tuning (float): Tuning value for pixels over the threshold.
+
+    Returns:
+        float: The computed loss value.
+    """
      bin = bin[:-1]
      
      # distance if the pixel is under the threshold
@@ -58,6 +72,22 @@ def get_loss(num, bin, thresh, tuning_method, under_tuning, over_tuning):
      return loss
 
 def get_best_thresh(num, bin, tuning_method = 'Auto', under_tuning = None, over_tuning = None, show_loss = False):
+	"""
+	Find the best threshold value for binarization based on the provided parameters.
+
+	Args:
+        num (array): Histogram values.
+        bin (array): Bin values of the histogram.
+        tuning_method (str): Tuning method ('Auto' or 'Manual').
+        under_tuning (float): Tuning value for pixels under the threshold (only for 'Manual' tuning).
+        over_tuning (float): Tuning value for pixels over the threshold (only for 'Manual' tuning).
+        show_loss (bool): Whether to plot the loss function.
+
+	Returns:
+        int: The best threshold value.
+        float: The minimum loss value.
+        list: List of loss values for each threshold.
+	"""
 	loss_list = []
 	
 	if tuning_method == 'Manual':
@@ -82,6 +112,17 @@ def get_best_thresh(num, bin, tuning_method = 'Auto', under_tuning = None, over_
 	return best_thresh, min_loss, loss_list
 
 def apply_thresh(img_gray, thresh, show_img = False):
+	"""
+	Apply thresholding to a grayscale image.
+
+	Args:
+        img_gray (array): Grayscale input image.
+        thresh (int): Threshold value for binarization.
+        show_img (bool): Whether to display the binarized image.
+
+	Returns:
+        array: Binarized image.
+	"""
 	img_bin = img_gray > thresh # Mask
 	if show_img:
 		plt.figure()
