@@ -12,12 +12,14 @@ ap.add_argument("-t", "--tuning_method", required=True, help="tuning method to u
 ap.add_argument("-u", "--under_tuning", help="under tuning value")
 ap.add_argument("-o", "--over_tuning", help="over tuning value")
 ap.add_argument("-s", "--storing_path", help="path to storing image + name + extension")
+ap.add_argument("-show_all", "--show_all", required=True, help="show all the images. True or False")
 args = vars(ap.parse_args())
 img_path = args["img_path"]
 tuning_method = args["tuning_method"]
 under_tuning = args["under_tuning"]
 over_tuning = args["over_tuning"]
 storing_path = args["storing_path"]
+show_all = args["show_all"]
 
 #------------------------ FUNCTIONS DEFINITIONS ------------------------#
 
@@ -152,46 +154,48 @@ print('The minimum loss is: ', min_loss)
 # Binarization with Otsu's method
 img_otsu = cv.threshold(img_gray, 0, 255, cv.THRESH_OTSU)[1]
 
-# Show the results
-# Histogram and Loss
-fig, axs = plt.subplots(1,2, figsize=(10,5))
-plt.subplots_adjust(wspace=0.02)  # You can adjust the value as needed
+if show_all == 'True':
+	# Show the results
+	# Histogram and Loss
+	fig, axs = plt.subplots(1,2, figsize=(10,5))
+	plt.subplots_adjust(wspace=0.02)  # You can adjust the value as needed
 
-axs[0].set_title('Histogram')
-axs[0].plot(num)
-axs[1].set_title('Loss function')
-axs[1].plot(losses)
-fig.text(0.5, 0.01, 'Pixel values', ha='center', fontsize=12)
+	axs[0].set_title('Histogram')
+	axs[0].plot(num)
+	axs[1].set_title('Loss function')
+	axs[1].plot(losses)
+	fig.text(0.5, 0.01, 'Pixel values', ha='center', fontsize=12)
 
-# Images comparison
-fig, axs = plt.subplots(1, 3, figsize=(15, 10))
+	# Images comparison
+	fig, axs = plt.subplots(1, 3, figsize=(15, 10))
 
-# Plot the original image in the first subplot
-axs[0].imshow(cv.cvtColor(img, cv.COLOR_BGR2RGB))
-axs[0].set_title('Original')
-axs[0].set_xticks([]), axs[0].set_yticks([])
+	# Plot the original image in the first subplot
+	axs[0].imshow(cv.cvtColor(img, cv.COLOR_BGR2RGB))
+	axs[0].set_title('Original')
+	axs[0].set_xticks([]), axs[0].set_yticks([])
 
-# Plot the binarized image in the second subplot
-axs[1].imshow(img_bin, cmap='gray')
-axs[1].set_title('Binarized')
-axs[1].set_xticks([]), axs[1].set_yticks([])
+	# Plot the binarized image in the second subplot
+	axs[1].imshow(img_bin, cmap='gray')
+	axs[1].set_title('Binarized')
+	axs[1].set_xticks([]), axs[1].set_yticks([])
 
-# Plot the Otsu image in the third subplot
-axs[2].imshow(img_otsu, cmap='gray')
-axs[2].set_title('Otsu')
-axs[2].set_xticks([]), axs[2].set_yticks([])
+	# Plot the Otsu image in the third subplot
+	axs[2].imshow(img_otsu, cmap='gray')
+	axs[2].set_title('Otsu')
+	axs[2].set_xticks([]), axs[2].set_yticks([])
 
-# Show the plots
-plt.show()
+	# Show the plots
+	plt.show()
 
 # Save the binarized image
 # Check if the file already exists
-if os.path.exists(storing_path):
-    print(f"Warning: The file {storing_path} already exists. Skipping save operation.")
-else:
-	# Convert it to 0 and 255
-	img_bin = (img_bin * 255).astype(np.uint8)
+if storing_path:
+	if os.path.exists(storing_path):
+		print(f"Warning: The file {storing_path} already exists. Skipping save operation.")
+	else:
+		# Convert it to 0 and 255
+		img_bin = (img_bin * 255).astype(np.uint8)
 
-	# Save the binary image as a JPEG file
-	cv.imwrite(storing_path, img_bin)
+		# Save the binary image as a JPEG file
+		cv.imwrite(storing_path, img_bin)
 
