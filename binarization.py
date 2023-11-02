@@ -8,7 +8,7 @@ import os
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--img_path", required=True, help="path to input image + name + extension")
-ap.add_argument("-t", "--tuning_method", required=True, help="tuning method to use")
+ap.add_argument("-t", "--tuning_method", required=True, help="tuning method to use: 'Auto' or 'Manual'")
 ap.add_argument("-u", "--under_tuning", help="under tuning value")
 ap.add_argument("-o", "--over_tuning", help="over tuning value")
 ap.add_argument("-s", "--storing_path", help="path to storing image + name + extension")
@@ -44,19 +44,19 @@ def get_loss(num, bin, thresh, tuning_method, under_tuning, over_tuning):
      # distance if the pixel is under the threshold
      dist_under_thresh = bin[:thresh]
      # distance if the pixel is over the threshold
-     dist_over_thresh = 255 - bin[thresh:]
+     dist_over_thresh = 256 - bin[thresh:]
      
      # Tune according to 'skewness' and value inserted by the user
      if tuning_method ==  'Auto':
          
          weighted = bin*num
          m = np.sum(weighted)/np.sum(num)
-         tuning  = np.abs(m-127)
+         tuning  = np.abs(m-128)
         
-         if m > (255/2 + 20):
+         if m > (256/2 + 20):
              tuned_dist_under_thresh = dist_under_thresh
              tuned_dist_over_thresh = dist_over_thresh + tuning
-         elif m < (255/2 - 20):
+         elif m < (256/2 - 20):
              tuned_dist_under_thresh = dist_under_thresh + tuning
              tuned_dist_over_thresh = dist_over_thresh
          else:
@@ -64,8 +64,8 @@ def get_loss(num, bin, thresh, tuning_method, under_tuning, over_tuning):
              tuned_dist_over_thresh = dist_over_thresh
           
      else:
-         tuned_dist_under_thresh = dist_under_thresh + under_tuning
-         tuned_dist_over_thresh = dist_over_thresh + over_tuning
+         tuned_dist_under_thresh = dist_under_thresh + int(under_tuning)
+         tuned_dist_over_thresh = dist_over_thresh + int(over_tuning)
 
          
      # concatenate the two parts
@@ -99,7 +99,7 @@ def get_best_thresh(num, bin, tuning_method = 'Auto', under_tuning = None, over_
 	else:
 		weighted = bin[:-1]*num
 		m = np.sum(weighted)/np.sum(num)
-		print('Tuning parameter (127 - mean): ', np.abs(m-127))
+		print('Tuning parameter (128 - mean): ', np.abs(m-128))
 
 	for i in range(1,255):
 		loss = get_loss(num, bin, i, tuning_method, under_tuning, over_tuning)
@@ -145,7 +145,7 @@ img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 num, bin= np.histogram(img_gray.ravel(), 256, [0, 256])
 
 # Get and apply the best threshold
-best_thresh, min_loss, losses = get_best_thresh(num, bin, tuning_method = 'Auto', show_loss=False)
+best_thresh, min_loss, losses = get_best_thresh(num, bin, tuning_method, under_tuning, over_tuning, show_loss=False)
 img_bin = apply_thresh(img_gray, best_thresh, show_img = False)
 
 print('The best threshold is: ', best_thresh)
