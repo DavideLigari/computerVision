@@ -1,7 +1,7 @@
 import math
 
 # Threshold by which lines will be rejected wrt the horizontal
-REJECT_DEGREE_TH = 6.0
+REJECT_DEGREE_TH = 3.0
 
 
 def filterLines(Lines):
