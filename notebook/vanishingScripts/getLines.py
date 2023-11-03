@@ -1,10 +1,10 @@
 from re import L
 import cv2
 import numpy as np
-from vanishingScripts.filterLines import filterLines
 from vanishingScripts.findOptimalCannyParams import findOptimalCannyParams
 from vanishingScripts.findOptimalHoughParams import findOptimalHoughParams
 import matplotlib.pyplot as plt
+from vanishingScripts.houghLinesCustomized import multipleHoughTransform
 
 
 def getLines(image):
@@ -24,20 +24,6 @@ def getLines(image):
 
     # Finding Lines in the image
     # threshold, minLineLenght, maxLineGap = findOptimalHoughParams(edgeImage)
-    lines = cv2.HoughLinesP(
-        edgeImage,
-        1,
-        np.pi / 180,
-        threshold=50,
-        minLineLength=60,
-        maxLineGap=15,
-    )
-    # Check if lines found and exit if not.
-    if lines is None:
-        print("Not enough lines found in the image for Vanishing Point detection.")
-        exit(0)
+    lines = multipleHoughTransform(edgeImage)
 
-    # Filtering lines wrt angle
-    filteredlines = filterLines(lines)
-
-    return filteredlines
+    return lines

@@ -22,7 +22,12 @@ def filterLines(lines):
         # Rejecting lines of slope near to 0 degree or 90 degree and storing others
         if REJECT_DEGREE_TH <= abs(theta) <= (90 - REJECT_DEGREE_TH):
             l = math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)  # length of the line
-            finalLines.append([x1, y1, x2, y2, m, c, l])
+            notParallel = True
+            for line2 in finalLines:
+                if line2[4] == m:
+                    notParallel = False
+            if notParallel:
+                finalLines.append([x1, y1, x2, y2, m, c, l])
 
     # Removing extra lines
     # (we might get many lines, so we are going to take only longest 15 lines
@@ -30,6 +35,6 @@ def filterLines(lines):
     # contribute towards slowing down of our algo.)
     if len(finalLines) > 5:
         finalLines = sorted(finalLines, key=lambda x: x[-1], reverse=True)
-        finalLines = finalLines[:15]
+        finalLines = finalLines[:10]
 
     return finalLines
