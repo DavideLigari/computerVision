@@ -15,8 +15,9 @@ def getLines(image):
     blurGrayImage = cv2.GaussianBlur(grayImage, (5, 5), 1)
 
     # Generating Edge image
-    # lowTreshold, highTreshold = findOptimalCannyParams(blurGrayImage)
-    edgeImage = cv2.Canny(blurGrayImage, 50, 60)
+    lowTreshold, highTreshold = findOptimalCannyParams(blurGrayImage)
+    print("lowTreshold, highTreshold", lowTreshold, highTreshold)
+    edgeImage = cv2.Canny(blurGrayImage, lowTreshold, highTreshold)
     plt.figure(figsize=(10, 10))
     plt.imshow(edgeImage, cmap="gray")
     plt.show()
@@ -28,8 +29,8 @@ def getLines(image):
         1,
         np.pi / 180,
         threshold=50,
-        minLineLength=30,
-        maxLineGap=20,
+        minLineLength=60,
+        maxLineGap=15,
     )
     # Check if lines found and exit if not.
     if lines is None:
