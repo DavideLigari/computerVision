@@ -1,6 +1,8 @@
 import math
 import random
 
+from torch import le
+
 
 def calculate_intersection(line1, line2):
     m1, c1 = line1[4], line1[5]
@@ -34,7 +36,7 @@ def count_inliers(lines, intersection, inlier_threshold):
     return inlier_count, inlier_lines
 
 
-def getVanishingPoint(lines, inlier_threshold=10, num_iterations=1000):
+def getVanishingPoint(lines, inlier_threshold=5, num_iterations=500):
     best_vanishing_point = None
     best_inlier_count = 0
     vanishing_lines = []
