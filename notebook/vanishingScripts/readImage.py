@@ -8,7 +8,7 @@ def readImage(InputImagePath):
 
     # Checking if path is of file or folder.
     if os.path.isfile(InputImagePath):  # If path is of file.
-        InputImage = cv2.imread(InputImagePath)  # Reading the image.
+        InputImage = cv2.imread(InputImagePath, cv2.IMREAD_COLOR)  # Reading the image.
 
         # Checking if image is read.
         if InputImage is None:
