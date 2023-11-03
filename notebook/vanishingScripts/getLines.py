@@ -1,3 +1,4 @@
+from re import L
 import cv2
 import numpy as np
 from vanishingScripts.filterLines import filterLines
@@ -5,21 +6,21 @@ from vanishingScripts.findOptimalCannyParams import findOptimalCannyParams
 from vanishingScripts.findOptimalHoughParams import findOptimalHoughParams
 
 
-def getLines(Image):
+def getLines(image):
     # Converting to grayscale
-    GrayImage = cv2.cvtColor(Image, cv2.COLOR_BGR2GRAY)
+    grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Blurring image to reduce noise.
-    BlurGrayImage = cv2.GaussianBlur(GrayImage, (5, 5), 1)
+    blurGrayImage = cv2.GaussianBlur(grayImage, (5, 5), 1)
 
     # Generating Edge image
-    lowTreshold, highTreshold = findOptimalCannyParams(BlurGrayImage)
-    EdgeImage = cv2.Canny(BlurGrayImage, lowTreshold, highTreshold)
+    lowTreshold, highTreshold = findOptimalCannyParams(blurGrayImage)
+    edgeImage = cv2.Canny(blurGrayImage, lowTreshold, highTreshold)
 
     # Finding Lines in the image
-    # threshold, minLineLenght, maxLineGap = findOptimalHoughParams(EdgeImage)
-    Lines = cv2.HoughLinesP(
-        EdgeImage,
+    # threshold, minLineLenght, maxLineGap = findOptimalHoughParams(edgeImage)
+    lines = cv2.HoughLinesP(
+        edgeImage,
         1,
         np.pi / 180,
         threshold=50,
@@ -27,11 +28,11 @@ def getLines(Image):
         maxLineGap=15,
     )
     # Check if lines found and exit if not.
-    if Lines is None:
+    if lines is None:
         print("Not enough lines found in the image for Vanishing Point detection.")
         exit(0)
 
-    # Filtering Lines wrt angle
-    FilteredLines = filterLines(Lines)
+    # Filtering lines wrt angle
+    filteredlines = filterLines(lines)
 
-    return FilteredLines
+    return filteredlines

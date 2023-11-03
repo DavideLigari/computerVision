@@ -17,7 +17,7 @@ def getVanishingPoint(Lines, max_iterations=10000, inlier_threshold=10):
         sample_lines = random.sample(Lines, 2)
         m1, c1 = sample_lines[0][4], sample_lines[0][5]
         m2, c2 = sample_lines[1][4], sample_lines[1][5]
-
+        possible_lines = []
         if m1 != m2:
             # Calculate the intersection point
             x0 = (c1 - c2) / (m2 - m1)
@@ -38,12 +38,12 @@ def getVanishingPoint(Lines, max_iterations=10000, inlier_threshold=10):
 
                 if distance < inlier_threshold:
                     inlier_count += 1
+                    possible_lines.append(line)
 
             if inlier_count > best_inlier_count:
                 best_inlier_count = inlier_count
                 best_vanishing_point = [x0, y0]
-                vanishing_lines.clear()
-                vanishing_lines.append(sample_lines[0])
-                vanishing_lines.append(sample_lines[1])
+                vanishing_lines = possible_lines
+                vanishing_lines += sample_lines
 
     return best_vanishing_point, vanishing_lines
