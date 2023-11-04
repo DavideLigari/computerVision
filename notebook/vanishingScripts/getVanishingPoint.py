@@ -1,8 +1,6 @@
 import math
 import random
 
-from torch import le
-
 
 def calculate_intersection(line1, line2):
     m1, c1 = line1[4], line1[5]

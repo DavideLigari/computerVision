@@ -1,8 +1,5 @@
-from re import L
 import cv2
-import numpy as np
 from vanishingScripts.findOptimalCannyParams import findOptimalCannyParams
-from vanishingScripts.findOptimalHoughParams import findOptimalHoughParams
 import matplotlib.pyplot as plt
 from vanishingScripts.houghLinesCustomized import multipleHoughTransform
 
