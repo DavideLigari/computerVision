@@ -91,6 +91,7 @@ The program is also provided with a basic Graphic User Interface (GUI) that allo
 ```bash
 python binarization_GUI.py
 ```
+![Alt text](Images/examples/GUI.png "GUI")
 
 ## Examples
 These are some examples of the program's output:
