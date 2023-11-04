@@ -15,12 +15,12 @@ a loss is computed for each possible value of the threshold and the minimum is s
 
 ### Loss Function
 
-The `get_loss` function calculates a loss function based on the provided parameters, such as the histogram values, bin values, threshold, tuning method, and tuning values. The loss function is the following:\
+The `get_loss` function calculates a loss function based on the provided parameters, such as the histogram values, bin values, threshold, tuning method, and tuning values. The loss function is the following:
 
-
-$
+**Loss Function**
+```math
 L = \sum_{i=0}^{T} {num}_{i} \cdot {dist\_under\_thresh}_{i} + \sum_{i=T+1}^{255} {num}_{i} \cdot {dist\_over\_thresh}_{i}
-$
+```
 
 
 where:
@@ -28,35 +28,35 @@ where:
 * **bin**: Bin values of the histogram.
 * **T**: Threshold value for binarization.
 
-If the tuning method is 'Auto', the distance is calculated as:
+If the tuning method is ```Auto```, the distance is calculated as:
 
-$
+```math
 \text{\textbf{IF } {mean} > 128 \textbf{ THEN }} {dist\_over\_thresh} = {dist} + {tuning\_value}
-$\
-$
+```
+```math
 \text{\textbf{IF } {mean} < 128 \textbf{ THEN }} {dist\_under\_thresh} = {dist} + {tuning\_value} 
-$
+```
 
 where:
-* ${tuning\_value} = |255 - {mean}|$
+* $tuning\\_value = |255 - {mean}|$
 * **dist**: Distance between the threshold and the bin value.
 
-If the tuning method is 'Manual', the tuning value is inserted by user and divided in two:
+If the tuning method is ```Manual```, the tuning values are two and inserted by user:
 * **under_tuning**: Tuning value for pixels under the threshold.
 * **over_tuning**: Tuning value for pixels over the threshold.
 
 The distance is calculated as:
 
-$
-{dist\_over\_thresh} = {dist} + {under\_tuning\_value}
-$\
-$
-{dist\_under\_thresh} = {dist} + {over\_tuning\_value} 
-$
+```math
+{dist\_over\_thresh} = {dist} + {over\_tuning\_value}
+```
+```math
+{dist\_under\_thresh} = {dist} + {under\_tuning\_value}
+```
 
 ### Finding the Best Threshold
 
-The `get_best_thresh` function finds the best threshold value for binarization. It can operate in either 'Auto' mode, which automatically determines the optimal threshold, or 'Manual' mode, where users can specify under-tuning and over-tuning values. This function returns the best threshold value and the corresponding minimum loss value. It also offers the option to plot the loss function for analysis.
+The `get_best_thresh` function finds the best threshold value for binarization. It can operate in either `Auto` mode, which automatically determines the optimal threshold, or `Manual` mode, where users can specify under-tuning and over-tuning values. This function returns the best threshold value and the corresponding minimum loss value. It also offers the option to plot the loss function for analysis.
 
 ### Applying Threshold
 
@@ -73,13 +73,13 @@ The program accepts the following command line arguments:
 - `-s` or `--storing_path`: Specify the path to store the output image + name.
 - `-show_all`: Set to 'False' only for serial script execution of multiple images.
 
-For 'Auto' tuning method:
+For `Auto` tuning method:
 
 ```bash
 python binarization.py -i [path_to_input_image] -t Auto -s [path_to_output_image] -show_all True 
 ```
 
-For 'Manual' tuning, you can use the following command:
+For `Manual` tuning, you can use the following command:
 
 ```bash
 python binarization.py -i [path_to_input_image] -t Manual -u [under_tuning_value] -o [over_tuning_value] -s [path_to_output_image] -show_all True
