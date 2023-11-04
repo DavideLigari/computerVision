@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from vanishingScripts.filterLines import filterLines
-import random
 
 
 def multipleHoughTransform(image):

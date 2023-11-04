@@ -1,6 +1,5 @@
 # import the necessary packages
 import numpy as np
-import cv2
 
 
 def findOptimalCannyParams(image, sigma=0.22):
