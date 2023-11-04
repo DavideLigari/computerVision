@@ -145,6 +145,7 @@ if __name__ == "__main__":
         plt.figure(figsize=(20, 10))
         plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         plt.title("Image with detected lines")
-        plt.xticks([]), plt.yticks([])
+        plt.xticks([])
+        plt.yticks([])
         plt.axis("off")
         plt.show()
