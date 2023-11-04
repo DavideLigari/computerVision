@@ -1,57 +1,110 @@
-# License Plate Detection and Recognition
+# Binarization Program
 
-A computer vision project that focuses on the detection and recognition of license plates in images. This system is designed to locate license plates in images, extract the characters from the plates, and convert them into digital text.
+This program is designed to perform image binarization using a specifically designed Histogram based thresholding technic. It offers both automatic and manual tuning methods to determine the optimal threshold for converting a given image into a binary image.
 
-## Project Overview
+## Introduction
 
-The project involves several key steps:
+Image binarization is a common image processing technique used to separate objects or regions of interest from the background. The goal is to find an optimal threshold value that divides the pixel values into two classes: foreground and background. 
 
-1. **Dataset Preparation**: Collect a dataset of images containing vehicles with visible license plates and annotate the license plate regions.
+## Reasoning Behind the Program
 
-2. **Preprocessing**: Enhance image quality through techniques like histogram equalization.
+The program aims to find the best threshold value minimizing a loss function. Specifically,
+a loss is computed for each possible value of the threshold and the minimum is selected.  Additionally, this program provides an option for manual tuning, allowing users to adjust the threshold values to suit their specific needs.
 
-3. **Canny Edge Detection**: Identify strong edges in the preprocessed images.
+## Functions Explanation
 
-4. **Hough Transform for Plate Detection**: Detect potential rectangular regions in the images that could be license plates.
+### Loss Function
 
-5. **Region of Interest (ROI) Selection**: Narrow down the search area based on the detected lines and select the region where the license plate is located.
+The `get_loss` function calculates a loss function based on the provided parameters, such as the histogram values, bin values, threshold, tuning method, and tuning values. The loss function is the following:\
 
-6. **Erosion and Dilation for Text Enhancement**: Apply erosion and dilation to enhance the text features on the license plate.
 
-7. **Filters for Improved Plate Clarity**: Utilize filters like Sobel to further enhance the edges and characters on the license plate.
+$
+L = \sum_{i=0}^{T} {num}_{i} \cdot {dist\_under\_thresh}_{i} + \sum_{i=T+1}^{255} {num}_{i} \cdot {dist\_over\_thresh}_{i}
+$
 
-8. **Character Segmentation**: Implement morphological algorithms for character segmentation within the license plate region.
 
-9. **Character Recognition**: Use Optical Character Recognition (OCR) techniques to recognize and extract characters from the segmented regions.
+where:
+* **num**: Histogram values.
+* **bin**: Bin values of the histogram.
+* **T**: Threshold value for binarization.
 
-10. **Post-processing and Verification**: Verify the recognized characters, correct errors, and format the characters if necessary.
+If the tuning method is 'Auto', the distance is calculated as:
 
-## Usage
+$
+\text{\textbf{IF } {mean} > 128 \textbf{ THEN }} {dist\_over\_thresh} = {dist} + {tuning\_value}
+$\
+$
+\text{\textbf{IF } {mean} < 128 \textbf{ THEN }} {dist\_under\_thresh} = {dist} + {tuning\_value} 
+$
 
-- You can run the project by following the code and instructions provided in the Jupyter notebook (or script) included in this repository.
+where:
+* ${tuning\_value} = |255 - {mean}|$
+* **dist**: Distance between the threshold and the bin value.
 
-## Results
+If the tuning method is 'Manual', the tuning value is inserted by user and divided in two:
+* **under_tuning**: Tuning value for pixels under the threshold.
+* **over_tuning**: Tuning value for pixels over the threshold.
 
-- Provide details on the project's accuracy and performance based on testing and evaluation. Highlight any areas for improvement.
+The distance is calculated as:
 
-## Dependencies
+$
+{dist\_over\_thresh} = {dist} + {under\_tuning\_value}
+$\
+$
+{dist\_under\_thresh} = {dist} + {over\_tuning\_value} 
+$
 
-- List the main libraries and dependencies used in the project (e.g., OpenCV, NumPy, etc.).
+### Finding the Best Threshold
 
-## License
+The `get_best_thresh` function finds the best threshold value for binarization. It can operate in either 'Auto' mode, which automatically determines the optimal threshold, or 'Manual' mode, where users can specify under-tuning and over-tuning values. This function returns the best threshold value and the corresponding minimum loss value. It also offers the option to plot the loss function for analysis.
 
-- This project is licensed under the [Your License Name] License. See the [LICENSE.md](LICENSE.md) file for details.
+### Applying Threshold
 
-## Acknowledgments
+The `apply_thresh` function applies the calculated threshold to the given image. It returns a binary image with values of 0 or 255, where 0 represents the background and 255 represents the foreground.
 
-- Any credits or acknowledgments for tools, libraries, or resources used in the project.
+## How to Use from Command Line
 
-## Contributors
+The program accepts the following command line arguments:
 
-- List contributors to the project or give credit to individuals who have contributed in any way.
+- `-i` or `--img_path`: Specify the path to the input image + name.
+- `-t` or `--tuning_method`: Choose the tuning method, either 'Auto' or 'Manual.'
+- `-u` or `--under_tuning`: Set the tuning value for pixels under the threshold (only for 'Manual' tuning).
+- `-o` or `--over_tuning`: Set the tuning value for pixels over the threshold (only for 'Manual' tuning).
+- `-s` or `--storing_path`: Specify the path to store the output image + name.
+- `-show_all`: Set to 'False' only for serial script execution of multiple images.
 
-## Contact
+For 'Auto' tuning method:
 
-- Provide your contact information if someone wants to reach out with questions or feedback.
+```bash
+python binarization.py -i [path_to_input_image] -t Auto -s [path_to_output_image] -show_all True 
+```
 
----
+For 'Manual' tuning, you can use the following command:
+
+```bash
+python binarization.py -i [path_to_input_image] -t Manual -u [under_tuning_value] -o [over_tuning_value] -s [path_to_output_image] -show_all True
+```
+
+## How to Use with a GUI
+The program is also provided with a basic Graphic User Interface (GUI) that allows users to select the input image, tuning method, tuning values and storing path. The GUI also displays the loss function and the resulting binary image. To run the GUI, simply run the following command in the program directory:
+
+```bash
+python binarization_GUI.py
+```
+
+## Examples
+These are some examples of the program's output:
+![Alt text](Images/examples/lake_loss.png "Lake Loss Function")
+![Alt text](Images/examples/lake_bin.png "Lake Binary Image")
+
+![Alt text](Images/examples/cars_loss.png "Cars Loss Function")
+![Alt text](Images/examples/cars_bin.png "Cars Binary Image")
+
+## SSIM computation
+Comparing the binarization program with Otsu's method, the SSIM index was computed for each image. The results are shown below:
+
+![Alt text](Images/examples/SSIM.png "SSIM Index")
+
+As expected the SSIM index is low, meaning that the two methods produce different results.
+However, despite the simplicity of the implemented algorithm, it performs visually well.
+

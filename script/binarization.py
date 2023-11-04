@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 import os
 
+
+# ------------------------ ARGUMENTS PARSING ------------------------#
+
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument(
@@ -30,8 +33,8 @@ over_tuning = args["over_tuning"]
 storing_path = args["storing_path"]
 show_all = args["show_all"]
 
-# ------------------------ FUNCTIONS DEFINITIONS ------------------------#
 
+# ------------------------ FUNCTIONS DEFINITIONS ------------------------#
 
 # Loss function
 def get_loss(num, bin, thresh, tuning_method, under_tuning, over_tuning):
@@ -56,16 +59,16 @@ def get_loss(num, bin, thresh, tuning_method, under_tuning, over_tuning):
     # distance if the pixel is over the threshold
     dist_over_thresh = 256 - bin[thresh:]
 
-    # Tune according to 'skewness' and value inserted by the user
+    # Tune according to mean position and value inserted by the user
     if tuning_method == "Auto":
         weighted = bin * num
         m = np.sum(weighted) / np.sum(num)
         tuning = np.abs(m - 128)
 
-        if m > (256 / 2 + 20):
+        if m > (256 / 2 + 10):
             tuned_dist_under_thresh = dist_under_thresh
             tuned_dist_over_thresh = dist_over_thresh + tuning
-        elif m < (256 / 2 - 20):
+        elif m < (256 / 2 - 10):
             tuned_dist_under_thresh = dist_under_thresh + tuning
             tuned_dist_over_thresh = dist_over_thresh
         else:
@@ -110,7 +113,11 @@ def get_best_thresh(
     else:
         weighted = bin[:-1] * num
         m = np.sum(weighted) / np.sum(num)
-        print("Tuning parameter (128 - mean): ", np.abs(m - 128))
+        if m > (256 / 2 + 10):
+            under_over = "over"
+        else:
+            under_over = "under"
+        print(f"Tuning parameter (128 - mean): {np.abs(m - 128)} --> {under_over}")
 
     for i in range(1, 255):
         loss = get_loss(num, bin, i, tuning_method, under_tuning, over_tuning)

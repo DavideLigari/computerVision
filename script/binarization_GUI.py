@@ -86,7 +86,11 @@ def get_best_thresh(
     else:
         weighted = bin[:-1] * num
         m = np.sum(weighted) / np.sum(num)
-        print("Tuning parameter (128 - mean): ", np.abs(m - 128))
+        if m > (256 / 2 + 10):
+            under_over = "over"
+        else:
+            under_over = "under"
+        print(f"Tuning parameter (128 - mean): {np.abs(m - 128)} --> {under_over}")
 
     for i in range(1, 255):
         loss = get_loss(num, bin, i, tuning_method, under_tuning, over_tuning)
