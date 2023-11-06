@@ -162,9 +162,9 @@
 \renewcommand{\headrulewidth}{0pt}
 \fancypagestyle{FirstPage}{
   \fancyhf{}
-  \fancyhead[L]{}
-  \fancyhead[C]{{\fontsize{7}{10} \selectfont \MakeUppercase{\@theshorttitle}}}
-  \fancyhead[R]{{\fontsize{7}{10} \selectfont \authorheader}}
+  \fancyhead[L]{\leftmark}
+  \fancyhead[C]{}
+  \fancyhead[R]{page \thepage}
 
 }
 % Section Format Settings
