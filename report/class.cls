@@ -18,6 +18,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{multirow}
+\usepackage{float}
 \usepackage[T1]{fontenc}
 \usepackage{ae,aecompl}
 \usepackage{pslatex}
