@@ -1,3 +1,5 @@
+\begin{multicols}{2}
+
 \section{Binarization Program}
 
 This program is designed to perform image binarization using a specifically designed Histogram based thresholding technique.
@@ -14,12 +16,11 @@ The program aims to find the best threshold value minimizing a loss function. Sp
 
 \subsection{Functions Explanation}
 
-\subsubsection*{Loss Function}
+\subsubsection{Loss Function}
 
 The \texttt{get\_loss} function calculates a loss function based on the provided parameters, such as the histogram values, bin values, threshold, tuning method, and tuning values. The loss function is the following:
-
 $$
-    L = \sum_{i=0}^{T} {{num}}_{i} \cdot {{dist\_under\_thresh}}_{i} + \sum_{i=T+1}^{255} {{num}}_{i} \cdot {{dist\_over\_thresh}}_{i}
+    L = \sum_{i=0}^{T} {{num}}_{i} \cdot {{dist\_u\_thresh}}_{i} + \sum_{i=T+1}^{255} {{num}}_{i} \cdot {{dist\_o\_thresh}}_{i}
 $$
 
 where:
@@ -28,22 +29,23 @@ where:
     \item \textbf{bin}: Bin values of the histogram.
     \item \textbf{T}: Threshold value for binarization.
 \end{itemize}
-
+\vspace{0.4cm}
 \noindent
 If the tuning method is 'Auto', the distance is calculated as:
 $$
-    \textbf{IF } {{mean}} > 128 \textbf{ THEN } {{dist\_over\_thresh}} = {{dist}} + {{tuning\_value}}
+    \textbf{IF } {{mean}} > 128 \textbf{ THEN } {{dist\_o\_thresh}} = {{dist}} + {{tuning\_val}}
 $$
 $$
-    \textbf{IF } {{mean}} < 128 \textbf{ THEN } {{dist\_under\_thresh}} = {{dist}} + {{tuning\_value}}
+    \textbf{IF } {{mean}} < 128 \textbf{ THEN } {{dist\_u\_thresh}} = {{dist}} + {{tuning\_val}}
 $$
 
 where:
 \begin{itemize}
-    \item \textbf{{tuning\_value}} = 255 - mean
+    \item \textbf{{tuning\_val}} = 255 - mean
     \item \textbf{dist}: Distance between the threshold and the bin value.
 \end{itemize}
 
+\vspace{0.4cm}
 \noindent
 If the tuning method is 'Manual', the tuning value is inserted by the user and divided in two:
 \begin{itemize}
@@ -55,21 +57,21 @@ If the tuning method is 'Manual', the tuning value is inserted by the user and d
 The distance is calculated as:
 
 $$
-    {{dist\_over\_thresh}} = {{dist}} + {{under\_tuning\_value}}
+    {{dist\_o\_thresh}} = {{dist}} + {{under\_tuning\_value}}
 $$
 $$
-    {{dist\_under\_thresh}} = {{dist}} + {{over\_tuning\_value}}
+    {{dist\_u\_thresh}} = {{dist}} + {{over\_tuning\_value}}
 $$
 
-\subsubsection*{Finding the Best Threshold}
+\subsubsection{Finding the Best Threshold}
 
 The \texttt{get\_best\_thresh} function finds the best threshold value for binarization. It can operate in either 'Auto' mode, which automatically determines the optimal threshold, or 'Manual' mode, where users can specify under-tuning and over-tuning values. This function returns the best threshold value and the corresponding minimum loss value. It also offers the option to plot the loss function for analysis.
 
-\subsubsection*{Applying Threshold}
+\subsubsection{Applying Threshold}
 
 The \texttt{apply\_thresh} function applies the calculated threshold to the given image. It returns a binary image with values of 0 or 255, where 0 represents the background and 255 represents the foreground.
 
-\subsection{How to Use from Command Line}
+\subsection{Command Line Usage}
 
 The program accepts the following command line arguments:
 
@@ -96,59 +98,82 @@ For 'Manual' tuning, you can use the following command:
     python binarization.py -i [path_to_input_image] -t Manual -u [under_tuning_value] -o [over_tuning_value] -s [path_to_output_image] -show_all True
 \end{bashscript}
 
-\subsection{How to Use with a GUI}
+\subsection{GUI Usage}
+
 
 The program is also provided with a basic Graphic User Interface (GUI) that allows users to select the input image, tuning method, tuning values, and storing path. The GUI also displays the loss function and the resulting binary image. To run the GUI, simply run the following command in the program directory:
+\\
+\\
+\textit{Command line input}
 
 \begin{bashscript}
     python binarization\_GUI.py
 \end{bashscript}
 
-\includegraphics[scale=0.6]{../Images/examples/GUI.png}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{../Images/examples/GUI.png}
+    \caption{Graphical User Interface}
+    \label{fig-0}
+\end{figure}
+
 
 \subsection{Examples}
 
-These are some examples of the program's output:
+These are some examples of the program's output:\\
+\\
+\textit{Command line input}
+
+\begin{bashscript}
+    python binarization.py -i 27img.jpg -t Auto -s 27img_bin.jpg -show_all True
+\end{bashscript}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\columnwidth]{../Images/examples/lake_loss.png}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/lake_loss.png}
     \caption{Lake Loss Function}
     \label{fig-1}
 \end{figure}
 
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\columnwidth]{../Images/examples/lake_bin.png}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/lake_bin.png}
     \caption{Lake Binary Image}
     \label{fig-2}
 \end{figure}
 
+\noindent
+\textit{Command line input}
+
+\begin{bashscript}
+    python binarization.py -i 5img.jpeg -t Auto -s 5img_bin.jpg -show_all True
+\end{bashscript}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\columnwidth]{../Images/examples/cars_loss.png}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/cars_loss.png}
     \caption{Cars Loss Function}
     \label{fig-3}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\columnwidth]{../Images/examples/cars_bin.png}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/cars_bin.png}
     \caption{Cars Binary Image}
     \label{fig-4}
 \end{figure}
 
-\subsection{SSIM computation}
+\subsection{SSIM Computation}
 
 Comparing the binarization program with Otsu's method, the SSIM index was computed for each image. The results are shown below:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\columnwidth]{../Images/examples/SSIM.png}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/SSIM.png}
     \caption{SSIM Index}
     \label{fig-5}
 \end{figure}
 
 \noindent
 As expected, the SSIM index is low, meaning that the two methods produce different results. However, despite the simplicity of the implemented algorithm, it performs visually well.
+
+\end{multicols}

@@ -1,10 +1,12 @@
+\begin{multicols}{2}
+
 \section{Vanishing Point and Lines Detection Program}
 \label{sec:program}
 
 This program is designed to detect vanishing points and vanishing lines within images.
 It is implemented in Python and is organized into multiple scripts, each dedicated to a specific aspect of the task.
 
-\subsection{Reasoning behind the program}
+\subsection{Reasoning Behind the Program}
 \label{subsec:reasoning}
 
 The development of the Vanishing Point and Lines Detection Program is driven by the compelling need to extract valuable geometric insights from images,
@@ -23,7 +25,7 @@ The program's functionality can be divided into four main stages:
 \end{itemize}
 
 
-\subsubsection*{Edge Detection}
+\subsubsection{Edge Detection}
 \label{subsubsec:edge-detection}
 
 Edge detection is a fundamental component of the program, aimed at identifying significant transitions in intensity within an image.
@@ -42,7 +44,7 @@ but rather computed dynamically based on the image's intensity distribution.
 Specifically, the program calculates these thresholds using the median of the image's intensity distribution,
 and the thresholds are set to the computed median $\pm 0.22$.
 This adaptive approach ensures that edge detection remains effective across a wide range of images, adapting to variations in lighting and content.
-\subsubsection*{Lines Detection}
+\subsubsection{Lines Detection}
 \label{subsubsec:lines-detection}
 
 The lines detection component of the program is responsible for identifying straight line segments within the image.
@@ -57,7 +59,7 @@ present in the image.\\
 To reduce the number of lines, a decision was made to consider only the five longest lines for each combination of parameters.
 Additionally, since parallel and vertical lines are unlikely to be vanishing lines, they are removed.
 
-\subsubsection*{Vanishing Point Detection}
+\subsubsection{Vanishing Point Detection}
 \label{subsubsec:vanishing-point-detection}
 
 Before discussing the implementation, it is important to understand the concepts of the vanishing point and vanishing lines. \\
@@ -70,7 +72,7 @@ For each intersection point, the algorithm counts the number of lines passing wi
 The point with the highest number of lines passing within this 5-pixel distance is considered the vanishing point.
 The lines that pass within 5 pixels of this point are identified as the vanishing lines.\\
 To make the results more comprensible to the user, the program draws the vanishing point and the 15-longest vanishing lines on the image.
-\subsection{How to use from command line}
+\subsection{Command Line Usage}
 The program accepts the following command line arguments:
 \begin{itemize}
     \item \texttt{-h} or \texttt{--help}: show the help message and exit.
@@ -84,11 +86,14 @@ The program accepts the following command line arguments:
     \item \texttt{-g} or \texttt{--maxLineGap}: Set the maximum line gap for the Hough transform (only for 'Manual' tuning).
     \item \texttt{-s} or \texttt{--storingPath}: Specify the path to store the output image + name.
 \end{itemize}
+\vspace{0.2cm}
 \noindent
 For ’Auto’ tuning method:
 \begin{bashscript}
     python vanishingPointDetection.py -p ../Images/vanishing_points  -t Auto -s ../Images/vanishing_points/results
 \end{bashscript}
+\vspace{0.2cm}
+\noindent
 For ’Manual’ tuning, you can use the following command:
 \begin{bashscript}
     python3 vanishingPointDetection.py -p ../Images/vanishing_points  -t Manual -l 30 -r 55 -a 1 -d 100 -m 20 -g 16
@@ -96,7 +101,9 @@ For ’Manual’ tuning, you can use the following command:
 
 \subsection{Examples}
 
-These are some examples of the program's output:
+These are some examples of the program's output:\\
+\\
+\textit{Command line input}
 
 \begin{bashscript}
     python3 vanishingPointDetection.py -p ../Images/vanishing_points/van_points.jpeg -t Auto -s ../Images/examples/van_points.jpeg
@@ -104,11 +111,13 @@ These are some examples of the program's output:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\columnwidth]{../Images/examples/van_points.jpg}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/van_points.jpg}
     \caption{Result of the vanishing point detection on the image van\_points.jpg}
     \label{fig-6}
 \end{figure}
 
+\noindent
+\textit{Command line input}
 
 \begin{bashscript}
     python3 vanishingPointDetection.py -p ../Images/vanishing_points/van_points8.jpeg -t Auto -s ../Images/examples/van_points8.jpeg
@@ -116,11 +125,13 @@ These are some examples of the program's output:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\columnwidth]{../Images/examples/van_points8.jpg}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/van_points8.jpg}
     \caption{Result of the vanishing point detection on the image van\_points8.jpg}
     \label{fig-7}
 \end{figure}
 
+\noindent
+\textit{Command line input}
 
 \begin{bashscript}
     python3 vanishingPointDetection.py -p ../Images/vanishing_points/van_points13.jpeg -t Auto -s ../Images/examples/van_points13.jpeg
@@ -128,10 +139,14 @@ These are some examples of the program's output:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\columnwidth]{../Images/examples/van_points13.jpg}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/van_points13.jpg}
     \caption{Result of the vanishing point detection on the image van\_points13.jpg}
     \label{fig-8}
 \end{figure}
+
+\newpage
+\noindent
+\textit{Command line input}
 
 \begin{bashscript}
     python3 vanishingPointDetection.py -p ../Images/vanishing_points/van_points6.jpeg -t Auto -s ../Images/examples/van_points6.jpeg
@@ -139,7 +154,9 @@ These are some examples of the program's output:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\columnwidth]{../Images/examples/van_points6.jpg}
+    \includegraphics[width=0.98\columnwidth]{../Images/examples/van_points6.jpg}
     \caption{Result of the vanishing point detection on the image van\_points6.jpg}
     \label{fig-9}
 \end{figure}
+
+\end{multicols}
