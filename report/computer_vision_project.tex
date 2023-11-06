@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{class}
 \usepackage{graphicx}
 \usepackage{algorithmic}
 \usepackage{listings}
@@ -26,138 +26,17 @@
 
 
 
-\title{Binarization Program}
-\author{}
-\date{}
+
+\title{Computer Vision Project}
+\author{Davide Ligari, Andrea Alberti}
+\github{https://github.com/AndreaAlberti07/Computer-Vision-Project}
+\affil[1]{Computer Vision course, University of Pavia, Department of Computer Engineering, Pavia, Italy}
+
 
 \begin{document}
 
 \maketitle
-
-\section{Binarization Program}
-
-This program is designed to perform image binarization using a specifically designed Histogram based thresholding technique. It offers both automatic and manual tuning methods to determine the optimal threshold for converting a given image into a binary image.
-
-\section{Introduction}
-
-Image binarization is a common image processing technique used to separate objects or regions of interest from the background. The goal is to find an optimal threshold value that divides the pixel values into two classes: foreground and background.
-
-\section{Reasoning Behind the Program}
-
-The program aims to find the best threshold value minimizing a loss function. Specifically, a loss is computed for each possible value of the threshold and the minimum is selected. Additionally, this program provides an option for manual tuning, allowing users to adjust the threshold values to suit their specific needs.
-
-\section{Functions Explanation}
-
-\subsection{Loss Function}
-
-The \texttt{get\_loss} function calculates a loss function based on the provided parameters, such as the histogram values, bin values, threshold, tuning method, and tuning values. The loss function is the following:
-
-$$
-L = \sum_{i=0}^{T} {{num}}_{i} \cdot {{dist\_under\_thresh}}_{i} + \sum_{i=T+1}^{255} {{num}}_{i} \cdot {{dist\_over\_thresh}}_{i}
-$$
-
-where:
-\begin{itemize}
-\item \textbf{num}: Histogram values.
-\item \textbf{bin}: Bin values of the histogram.
-\item \textbf{T}: Threshold value for binarization.
-\end{itemize}
-
-\noindent
-If the tuning method is 'Auto', the distance is calculated as:
-$$
-\textbf{IF } {{mean}} > 128 \textbf{ THEN } {{dist\_over\_thresh}} = {{dist}} + {{tuning\_value}}
-$$
-$$
-\textbf{IF } {{mean}} < 128 \textbf{ THEN } {{dist\_under\_thresh}} = {{dist}} + {{tuning\_value}}
-$$
-
-where:
-\begin{itemize}
-\item \textbf{{tuning\_value}} = 255 - mean
-\item \textbf{dist}: Distance between the threshold and the bin value.
-\end{itemize}
-
-\noindent
-If the tuning method is 'Manual', the tuning value is inserted by the user and divided in two:
-\begin{itemize}
-\item \textbf{under\_tuning}: Tuning value for pixels under the threshold.
-\item \textbf{over\_tuning}: Tuning value for pixels over the threshold.
-\end{itemize}
-
-\noindent
-The distance is calculated as:
-
-$$
-{{dist\_over\_thresh}} = {{dist}} + {{under\_tuning\_value}}
-$$
-$$
-{{dist\_under\_thresh}} = {{dist}} + {{over\_tuning\_value}}
-$$
-
-\subsection{Finding the Best Threshold}
-
-The \texttt{get\_best\_thresh} function finds the best threshold value for binarization. It can operate in either 'Auto' mode, which automatically determines the optimal threshold, or 'Manual' mode, where users can specify under-tuning and over-tuning values. This function returns the best threshold value and the corresponding minimum loss value. It also offers the option to plot the loss function for analysis.
-
-\subsection{Applying Threshold}
-
-The \texttt{apply\_thresh} function applies the calculated threshold to the given image. It returns a binary image with values of 0 or 255, where 0 represents the background and 255 represents the foreground.
-
-\section{How to Use from Command Line}
-
-The program accepts the following command line arguments:
-
-\begin{itemize}
-\item \texttt{-i} or \texttt{--img\_path}: Specify the path to the input image + name.
-\item \texttt{-t} or \texttt{--tuning\_method}: Choose the tuning method, either 'Auto' or 'Manual.'
-\item \texttt{-u} or \texttt{--under\_tuning}: Set the tuning value for pixels under the threshold (only for 'Manual' tuning).
-\item \texttt{-o} or \texttt{--over\_tuning}: Set the tuning value for pixels over the threshold (only for 'Manual' tuning).
-\item \texttt{-s} or \texttt{--storing\_path}: Specify the path to store the output image + name.
-\item \texttt{-show\_all}: Set to 'False' only for serial script execution of multiple images.
-\end{itemize}
-
-\noindent
-For 'Auto' tuning method:
-
-\begin{bashscript}
-python binarization.py -i [path_to_input_image] -t Auto -s [path_to_output_image] -show_all True
-\end{bashscript}
-
-\noindent
-For 'Manual' tuning, you can use the following command:
-
-\begin{bashscript}
-python binarization.py -i [path_to_input_image] -t Manual -u [under_tuning_value] -o [over_tuning_value] -s [path_to_output_image] -show_all True
-\end{bashscript}
-
-\section{How to Use with a GUI}
-
-The program is also provided with a basic Graphic User Interface (GUI) that allows users to select the input image, tuning method, tuning values, and storing path. The GUI also displays the loss function and the resulting binary image. To run the GUI, simply run the following command in the program directory:
-
-\begin{bashscript}
-python binarization\_GUI.py
-\end{bashscript}
-
-\includegraphics[scale=0.6]{../Images/examples/GUI.png}
-
-\section{Examples}
-
-These are some examples of the program's output:
-
-\includegraphics[scale=0.6]{../Images/examples/lake\_loss.png} \textbf{Lake Loss Function}
-
-\includegraphics[scale=0.6]{../Images/examples/lake\_bin.png} \textbf{Lake Binary Image}
-
-\includegraphics[scale=0.6]{../Images/examples/cars\_loss.png} \textbf{Cars Loss Function}
-
-\includegraphics[scale=0.6]{../Images/examples/cars\_bin.png} \textbf{Cars Binary Image}
-
-\section{SSIM computation}
-
-Comparing the binarization program with Otsu's method, the SSIM index was computed for each image. The results are shown below:
-
-\includegraphics[scale=0.6]{../Images/examples/SSIM.png} \textbf{SSIM Index}
-
-As expected, the SSIM index is low, meaning that the two methods produce different results. However, despite the simplicity of the implemented algorithm, it performs visually well.
+\tableofcontents
+\input{./Sections/binarization.tex}
 
 \end{document}
