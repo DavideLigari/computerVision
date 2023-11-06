@@ -15,10 +15,6 @@ def getLines(image):
     lowTreshold, highTreshold = findOptimalCannyParams(blurGrayImage)
     print("lowTreshold, highTreshold", lowTreshold, highTreshold)
     edgeImage = cv2.Canny(blurGrayImage, lowTreshold, highTreshold)
-    plt.figure(figsize=(10, 10))
-    plt.imshow(edgeImage, cmap="gray")
-    plt.show()
-
     # Finding Lines in the image
     # threshold, minLineLenght, maxLineGap = findOptimalHoughParams(edgeImage)
     lines = multipleHoughTransform(edgeImage)
