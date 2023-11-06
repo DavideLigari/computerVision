@@ -179,12 +179,12 @@
 \renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
   {-12pt}%
   {6pt}%
-  {\setlength\parindent{0em} \fontsize{11}{13} \selectfont \bfseries\textit}}%
+  {\setlength\parindent{0em} \fontsize{11}{13} \selectfont \bfseries}}%
 \renewcommand \thesubsubsection{\thesubsection.\arabic{subsubsection}}
 \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
   {-12pt}%
   {6pt}%
-  {\setlength\parindent{0em} \fontsize{11}{13} \selectfont \textit}}
+  {\setlength\parindent{0em} \fontsize{11}{13} \selectfont \bfseries\textit}}
 
 
 
