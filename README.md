@@ -1,99 +1,51 @@
+# Dependency
+
+To run these programs successfully, you must have the following packages installed:
+
+- Python (3.x recommended)
+- OpenCV (cv2)
+- NumPy
+- Matplotlib
+
 # Binarization Program
 
-This program is designed to perform image binarization using a specifically designed Histogram based thresholding technic. It offers both automatic and manual tuning methods to determine the optimal threshold for converting a given image into a binary image.
+Perform image binarization using a histogram-based thresholding technique, offering both automatic and manual tuning.
 
 ## Introduction
 
-Image binarization is a common image processing technique used to separate objects or regions of interest from the background. The goal is to find an optimal threshold value that divides the pixel values into two classes: foreground and background. 
+Image binarization separates objects or regions of interest from the background by finding an optimal threshold.
 
-## Reasoning Behind the Program
+## Key Features
 
-The program aims to find the best threshold value minimizing a loss function. Specifically,
-a loss is computed for each possible value of the threshold and the minimum is selected.  Additionally, this program provides an option for manual tuning, allowing users to adjust the threshold values to suit their specific needs.
+- **Loss Function**: The `get_loss` function calculates a loss function, considering histogram values, bin values, and threshold.
+- **Finding the Best Threshold**: The `get_best_thresh` function finds the best threshold value for binarization in either 'Auto' or 'Manual' mode.
+- **Applying Threshold**: The `apply_thresh` function generates a binary image with values of 0 or 255.
 
-## Functions Explanation
+## Usage
 
-### Loss Function
+### Command Line
 
-The `get_loss` function calculates a loss function based on the provided parameters, such as the histogram values, bin values, threshold, tuning method, and tuning values. The loss function is the following:
+Use the following command line arguments:
 
-**Loss Function**
-```math
-L = \sum_{i=0}^{T} {num}_{i} \cdot {dist\_under\_thresh}_{i} + \sum_{i=T+1}^{255} {num}_{i} \cdot {dist\_over\_thresh}_{i}
-```
-
-
-where:
-* **num**: Histogram values.
-* **bin**: Bin values of the histogram.
-* **T**: Threshold value for binarization.
-
-If the tuning method is ```Auto```, the distance is calculated as:
-
-```math
-\text{\textbf{IF } {mean} > 128 \textbf{ THEN }} {dist\_over\_thresh} = {dist} + {tuning\_value}
-```
-```math
-\text{\textbf{IF } {mean} < 128 \textbf{ THEN }} {dist\_under\_thresh} = {dist} + {tuning\_value} 
-```
-
-where:
-* $tuning\\_value = |255 - {mean}|$
-* **dist**: Distance between the threshold and the bin value.
-
-If the tuning method is ```Manual```, the tuning values are two and inserted by user:
-* **under_tuning**: Tuning value for pixels under the threshold.
-* **over_tuning**: Tuning value for pixels over the threshold.
-
-The distance is calculated as:
-
-```math
-{dist\_over\_thresh} = {dist} + {over\_tuning\_value}
-```
-```math
-{dist\_under\_thresh} = {dist} + {under\_tuning\_value}
-```
-
-### Finding the Best Threshold
-
-The `get_best_thresh` function finds the best threshold value for binarization. It can operate in either `Auto` mode, which automatically determines the optimal threshold, or `Manual` mode, where users can specify under-tuning and over-tuning values. This function returns the best threshold value and the corresponding minimum loss value. It also offers the option to plot the loss function for analysis.
-
-### Applying Threshold
-
-The `apply_thresh` function applies the calculated threshold to the given image. It returns a binary image with values of 0 or 255, where 0 represents the background and 255 represents the foreground.
-
-## How to Use from Command Line
-
-The program accepts the following command line arguments:
-
-- `-i` or `--img_path`: Specify the path to the input image + name.
-- `-t` or `--tuning_method`: Choose the tuning method, either 'Auto' or 'Manual.'
-- `-u` or `--under_tuning`: Set the tuning value for pixels under the threshold (only for 'Manual' tuning).
-- `-o` or `--over_tuning`: Set the tuning value for pixels over the threshold (only for 'Manual' tuning).
-- `-s` or `--storing_path`: Specify the path to store the output image + name.
+- `-i` or `--img_path`: Input image path.
+- `-t` or `--tuning_method`: Choose 'Auto' or 'Manual' tuning.
+- `-u` or `--under_tuning`: Set tuning value for pixels under the threshold (only for 'Manual' tuning).
+- `-o` or `--over_tuning`: Set tuning value for pixels over the threshold (only for 'Manual' tuning).
+- `-s` or `--storing_path`: Output image path.
 - `-show_all`: Set to 'False' only for serial script execution of multiple images.
 
-For `Auto` tuning method:
+### Graphic User Interface (GUI)
 
-```bash
-python binarization.py -i [path_to_input_image] -t Auto -s [path_to_output_image] -show_all True 
-```
-
-For `Manual` tuning, you can use the following command:
-
-```bash
-python binarization.py -i [path_to_input_image] -t Manual -u [under_tuning_value] -o [over_tuning_value] -s [path_to_output_image] -show_all True
-```
-
-## How to Use with a GUI
-The program is also provided with a basic Graphic User Interface (GUI) that allows users to select the input image, tuning method, tuning values and storing path. The GUI also displays the loss function and the resulting binary image. To run the GUI, simply run the following command in the program directory:
+To use the GUI, run:
 
 ```bash
 python binarization_GUI.py
 ```
+
 ![Alt text](Images/examples/GUI.png "GUI")
 
 ## Examples
+
 These are some examples of the program's output:
 ![Alt text](Images/examples/lake_loss.png "Lake Loss Function")
 ![Alt text](Images/examples/lake_bin.png "Lake Binary Image")
@@ -102,6 +54,7 @@ These are some examples of the program's output:
 ![Alt text](Images/examples/cars_bin.png "Cars Binary Image")
 
 ## SSIM computation
+
 Comparing the binarization program with Otsu's method, the SSIM index was computed for each image. The results are shown below:
 
 ![Alt text](Images/examples/SSIM.png "SSIM Index")
@@ -109,3 +62,54 @@ Comparing the binarization program with Otsu's method, the SSIM index was comput
 As expected the SSIM index is low, meaning that the two methods produce different results.
 However, despite the simplicity of the implemented algorithm, it performs visually well.
 
+# Vanishing Point and Lines Detection Program
+
+This program is designed to detect vanishing points and vanishing lines within images. It's implemented in Python and organized into multiple scripts, each dedicated to a specific aspect of the task.
+
+## Key Features
+
+The program's functionality is divided into four main stages:
+
+1. **Preprocessing**: Converts the input image to grayscale and reduces noise to enhance clarity and reduce artifacts.
+2. **Edge Detection**: Identifies significant transitions in intensity within the image using the Canny edge detector.
+3. **Lines Detection**: Detects straight line segments within the image using the probabilistic Hough transform.
+4. **Vanishing Point Detection**: Identifies the vanishing point and vanishing lines within the image using the RANSAC algorithm.
+
+## Command Line Usage
+
+The program accepts several command line arguments, allowing you to customize its behavior for different images or use cases. You can choose between 'Auto' and 'Manual' tuning for edge detection and specify other parameters.
+Use the following command line arguments:
+
+- `-h` or `--help`: show the help message and exit.
+- `-p` or `--path`: Specify the path to the input image or a folder containing images for batch processing.
+- `-t` or `--tuning_method`: Choose the tuning method, either 'Auto' or 'Manual.'
+- `-l` or `--lowThreshold`: Set the low threshold for the Canny edge detector (only for 'Manual' tuning).
+- `-r` or `--highThreshold`: Set the high threshold for the Canny edge detector (only for 'Manual' tuning).
+- `-a` or `--theta`: Set the theta value for the Hough transform (only for 'Manual' tuning).
+- `-d` or `--threshold`: Set the threshold value for the Hough transform (only for 'Manual' tuning).
+- `-m` or `--minLineLength`: Set the minimum line length for the Hough transform (only for 'Manual' tuning).
+- `-g` or `--maxLineGap`: Set the maximum line gap for the Hough transform (only for 'Manual' tuning).
+- `-s` or `--storingPath`: Specify the path to store the output image + name.
+  For example, for 'Auto' tuning:
+
+```bash
+python vanishingPointDetection.py -p [input_path] -t Auto -s [output_path]
+```
+
+## Examples
+
+```bash
+    python3 vanishingPointDetection.py -p ../Images/vanishing_points/van_points8.jpeg -t Auto -s ../Images/examples/van_points8.jpeg
+```
+
+![Alt text](Images/examples/van_points8.jpg "Result of the vanishing point detection on the image van_points8.jpg")
+
+```bash
+    python3 vanishingPointDetection.py -p ../Images/vanishing_points/van_points8.jpeg -t Auto -s ../Images/examples/van_points8.jpeg
+```
+
+![Alt text](Images/examples/van_points13.jpg "Result of the vanishing point detection on the image van_points13.jpg")
+
+# Additional details
+
+Further information about the implementation and results of this project can be found in the [Report](report/computer_vision_project.pdf)
