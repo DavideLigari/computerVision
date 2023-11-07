@@ -4,8 +4,17 @@ To run these programs successfully, you must have the following packages install
 
 - Python (3.x recommended)
 - OpenCV (cv2)
+ ```bash
+pip install opencv-python
+```
 - NumPy
+```bash
+pip install numpy
+```
 - Matplotlib
+```bash
+pip install matplotlib
+```
 
 # Binarization Program
 
@@ -17,10 +26,14 @@ Image binarization separates objects or regions of interest from the background 
 
 ## Key Features
 
-- **Loss Function**: The `get_loss` function calculates a loss function, considering histogram values, bin values, and threshold.
+- **Loss Function**: The `get_loss` function calculates a loss function, considering histogram values, bin values, and threshold. 
+```math
+    L = \sum_{i=0}^{T} {{num}}_{i} \cdot {{dist\_u\_thresh}}_{i} + \sum_{i=T+1}^{255} {{num}}_{i} \cdot {{dist\_o\_thresh}}_{i}
+```
 - **Finding the Best Threshold**: The `get_best_thresh` function finds the best threshold value for binarization in either 'Auto' or 'Manual' mode.
 - **Applying Threshold**: The `apply_thresh` function generates a binary image with values of 0 or 255.
 
+For a detailed description of the algorithm, please refer to the [Report](report/computer_vision_project.pdf).
 ## Usage
 
 ### Command Line
@@ -47,8 +60,16 @@ python binarization_GUI.py
 ## Examples
 
 These are some examples of the program's output:
+```bash
+    python binarization.py -i 27img.jpg -t Auto -s 27img_bin.jpg -show_all True
+```
+
 ![Alt text](Images/examples/lake_loss.png "Lake Loss Function")
 ![Alt text](Images/examples/lake_bin.png "Lake Binary Image")
+
+```bash
+    python binarization.py -i 5img.jpeg -t Auto -s 5img_bin.jpg -show_all True
+```
 
 ![Alt text](Images/examples/cars_loss.png "Cars Loss Function")
 ![Alt text](Images/examples/cars_bin.png "Cars Binary Image")
